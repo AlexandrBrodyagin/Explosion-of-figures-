@@ -4,9 +4,13 @@ public class CubeSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject _cubePrefab;
 
+    private int _minNumbersCubes = 2;
+    private int _maxNumbersCubes = 6;
+    private float _scaleReductionRatio = 0.5f;
+
     public GameObject[] SpawnCubes()
     {
-        int amount = Random.Range(2, 7);
+        int amount = Random.Range(_minNumbersCubes, _maxNumbersCubes + 1);
         GameObject[] newCubes = new GameObject[amount];
 
         for (int i = 0; i < amount; i++)
@@ -25,7 +29,7 @@ public class CubeSpawner : MonoBehaviour
 
     private void SetupNewCube(GameObject newCube)
     {
-        newCube.transform.localScale = transform.localScale * 0.5f;
+        newCube.transform.localScale = transform.localScale * _scaleReductionRatio;
 
         var splitter = newCube.GetComponent<CubeSplitter>();
 

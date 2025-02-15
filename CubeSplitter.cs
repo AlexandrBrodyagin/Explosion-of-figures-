@@ -8,6 +8,7 @@ public class CubeSplitter : MonoBehaviour
 
     private CubeSpawner _spawner;
     private float _currentSplitChance;
+    private float _chansePersent = 0.5f;
 
     private void Awake()
     {
@@ -22,25 +23,23 @@ public class CubeSplitter : MonoBehaviour
 
     public void TrySplit()
     {
-        if (Random.value > _currentSplitChance)
+        if (Random.value < _currentSplitChance)
         {
-            Destroy(gameObject);
-            return;
+            var newCubes = _spawner.SpawnCubes();
+            ApplyExplosionForce(newCubes);
         }
 
-        var newCubes = _spawner.SpawnCubes();
-        ApplyExplosionForce(newCubes);
-        Destroy(gameObject);
+            Destroy(gameObject);
     }
 
     private void ApplyExplosionForce(GameObject[] cubes)
     {
         foreach (var cube in cubes)
         {
-            var rb = cube.GetComponent<Rigidbody>();
-            rb.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+            var rigidBody = cube.GetComponent<Rigidbody>();
+            rigidBody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
         }
     }
 
-    public float GetNextSplitChance() => _currentSplitChance * 0.5f;
+    public float GetNextSplitChance() => _currentSplitChance * _chansePersent;
 }
