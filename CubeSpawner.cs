@@ -31,13 +31,9 @@ public class CubeSpawner : MonoBehaviour
     {
         newCube.transform.localScale = transform.localScale * _scaleReductionRatio;
 
-        var splitter = newCube.GetComponent<CubeSplitter>();
-
-        if (splitter != null)
+        if (newCube.TryGetComponent(out CubeSplitter splitter) && TryGetComponent(out CubeSplitter thisSplitter))
         {
-            
-            float nextChance = GetComponent<CubeSplitter>().GetNextSplitChance();
-            splitter.SetSplitChance(nextChance);
+            splitter.SetSplitChance(thisSplitter.GetNextSplitChance());
         }
     }
 }
